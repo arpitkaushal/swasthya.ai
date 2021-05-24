@@ -5,8 +5,8 @@
         "/signout": "signout",
         "/users": "get all users",
         "/user/:userId": "get/update/delete user",
-        "/posts": "get all posts",
-        "/post/new/:userId": "create new post",
-        "/posts/by/:userId": "get posts by user",
-        "/post/:postId": "update/delete post"
+        "/blogs": "get all blogs",
+        "/blog/new/:userId": "create new blog",
+        "/blogs/by/:userId": "get blogs by user",
+        "/blog/:blogId": "update/delete blog"
 }

@@ -11,26 +11,26 @@ dotenv.config();
 // Connect to DB
 const mongoose = require("mongoose"); //manages DB connection
 mongoose
-  .connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: true,
-  })
-  .then(() => console.log("DB Connected")) // if successful
-  .catch((e) => console.log(`DB connection Error: ${e}`)); // if not successful
+    .connect(process.env.MONGO_URI, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        useCreateIndex: true,
+    })
+    .then(() => console.log("DB Connected")) // if successful
+    .catch((e) => console.log(`DB connection Error: ${e}`)); // if not successful
 //
 
-
 // bring in routes
-const postRoutes = require("./routes/post");
+const blogRoutes = require("./routes/blog");
 const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/user");
-// apiDocs
+
+// apiDocs - JSON response to see routes/methods available with the API
 app.get("/", (req, res) => {
     fs.readFile("docs/apiDocs.json", (err, data) => {
         if (err) {
             res.status(400).json({
-                error: err
+                error: err,
             });
         }
         const docs = JSON.parse(data);
@@ -43,16 +43,17 @@ app.use(morgan("dev"));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(expressValidator());
-app.use("/", postRoutes);
+app.use("/", blogRoutes);
 app.use("/", authRoutes);
 app.use("/", userRoutes);
-app.use(function(err, req, res, next) {
+
+app.use(function (err, req, res, next) {
     if (err.name === "UnauthorizedError") {
         res.status(401).json({ error: "Unauthorized!" });
     }
 });
 
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 5000 || 8081;
 app.listen(port, () => {
-    console.log(`A Node Js API is listening on port: ${port}`);
+    console.log(`App running on port: ${port}`);
 });

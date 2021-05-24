@@ -1,33 +1,33 @@
-const Post = require("../models/post");
+const Blog = require("../models/blog");
 const formidable = require("formidable");
 const fs = require("fs");
 const _ = require("lodash");
 
-exports.postById = (req, res, next, id) => {
-    Post.findById(id)
-        .populate("postedBy", "_id name")
-        .exec((err, post) => {
-            if (err || !post) {
+exports.blogById = (req, res, next, id) => {
+    Blog.findById(id)
+        .populate("blogedBy", "_id name")
+        .exec((err, blog) => {
+            if (err || !blog) {
                 return res.status(400).json({
                     error: err
                 });
             }
-            req.post = post;
+            req.blog = blog;
             next();
         });
 };
 
-exports.getPosts = (req, res) => {
-    const posts = Post.find()
-        .populate("postedBy", "_id name")
+exports.getBlogs = (req, res) => {
+    const blogs = Blog.find()
+        .populate("blogedBy", "_id name")
         .select("_id title body")
-        .then(posts => {
-            res.json({ posts });
+        .then(blogs => {
+            res.json({ blogs });
         })
         .catch(err => console.log(err));
 };
 
-exports.createPost = (req, res, next) => {
+exports.createBlog = (req, res, next) => {
     let form = new formidable.IncomingForm();
     form.keepExtensions = true;
     form.parse(req, (err, fields, files) => {
@@ -36,17 +36,17 @@ exports.createPost = (req, res, next) => {
                 error: "Image could not be uploaded"
             });
         }
-        let post = new Post(fields);
+        let blog = new Blog(fields);
 
         req.profile.hashed_password = undefined;
         req.profile.salt = undefined;
-        post.postedBy = req.profile;
+        blog.blogedBy = req.profile;
 
         if (files.photo) {
-            post.photo.data = fs.readFileSync(files.photo.path);
-            post.photo.contentType = files.photo.type;
+            blog.photo.data = fs.readFileSync(files.photo.path);
+            blog.photo.contentType = files.photo.type;
         }
-        post.save((err, result) => {
+        blog.save((err, result) => {
             if (err) {
                 return res.status(400).json({
                     error: err
@@ -57,25 +57,25 @@ exports.createPost = (req, res, next) => {
     });
 };
 
-exports.postsByUser = (req, res) => {
-    Post.find({ postedBy: req.profile._id })
-        .populate("postedBy", "_id name")
+exports.blogsByUser = (req, res) => {
+    Blog.find({ blogedBy: req.profile._id })
+        .populate("blogedBy", "_id name")
         .sort("_created")
-        .exec((err, posts) => {
+        .exec((err, blogs) => {
             if (err) {
                 return res.status(400).json({
                     error: err
                 });
             }
-            res.json(posts);
+            res.json(blogs);
         });
 };
 
-exports.isPoster = (req, res, next) => {
-    let isPoster =
-        req.post && req.auth && req.post.postedBy._id == req.auth._id;
+exports.isBloger = (req, res, next) => {
+    let isBloger =
+        req.blog && req.auth && req.blog.blogedBy._id == req.auth._id;
 
-    if (!isPoster) {
+    if (!isBloger) {
         return res.status(403).json({
             error: "User is not authorized"
         });
@@ -83,30 +83,30 @@ exports.isPoster = (req, res, next) => {
     next();
 };
 
-exports.updatePost = (req, res, next) => {
-    let post = req.post;
-    post = _.extend(post, req.body);
-    post.updated = Date.now();
-    post.save(err => {
+exports.updateBlog = (req, res, next) => {
+    let blog = req.blog;
+    blog = _.extend(blog, req.body);
+    blog.updated = Date.now();
+    blog.save(err => {
         if (err) {
             return res.status(400).json({
                 error: err
             });
         }
-        res.json(post);
+        res.json(blog);
     });
 };
 
-exports.deletePost = (req, res) => {
-    let post = req.post;
-    post.remove((err, post) => {
+exports.deleteBlog = (req, res) => {
+    let blog = req.blog;
+    blog.remove((err, blog) => {
         if (err) {
             return res.status(400).json({
                 error: err
             });
         }
         res.json({
-            message: "Post deleted successfully"
+            message: "Blog deleted successfully"
         });
     });
 };
