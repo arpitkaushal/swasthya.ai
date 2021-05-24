@@ -11,7 +11,7 @@ const { requireSignin } = require("../controllers/auth");
 const router = express.Router();
 
 router.get("/users", allUsers);
-router.get("/user/:userId", requireSignin, getUser);
+router.get("/user/:userId", getUser);
 router.put("/user/:userId", requireSignin, updateUser);
 router.delete("/user/:userId", requireSignin, deleteUser);
 

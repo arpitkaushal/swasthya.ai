@@ -40,16 +40,15 @@ exports.signin = (req, res) => {
         // return response with user and token 
         const { _id, name, username } = user;
         return res.json({
-            message: "Signed in successfully. Here are your details.",
+            message: `Welcome ${user.username} ! You've signed in successfully.`,
             token,
             user: { _id, username, name },
         });
     });
-};
+};  
 
-exports.signout = (req, res) => {
+exports.signout = (req, res,next) => {
     res.clearCookie("t");
-    // m1 = `Signed Out successfully from ${req.profile.username}!`;
     return res.json({ message: "Signed Out successfully!" });
 };
 

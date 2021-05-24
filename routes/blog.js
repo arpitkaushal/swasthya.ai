@@ -6,7 +6,8 @@ const {
     blogById,
     isBloger,
     updateBlog,
-    deleteBlog
+    deleteBlog,
+    displayBlog
 } = require("../controllers/blog");
 const { requireSignin } = require("../controllers/auth");
 const { userById } = require("../controllers/user");
@@ -17,12 +18,14 @@ const router = express.Router();
 router.get("/blogs", getBlogs);
 router.post(
     "/blog/new/:userId",
-    requireSignin,
+    // requireSignin,
     createBlogValidator,
     createBlog,
 );
 router.get("/blogs/by/:userId", blogsByUser);
-router.put("/blog/:blogId", requireSignin, isBloger, updateBlog);
+router.put("/blog/:blogId", isBloger, updateBlog);
+router.get("/blog/:blogId", displayBlog);
+router.put("/blog/:blogId", updateBlog);
 router.delete("/blog/:blogId", requireSignin, isBloger, deleteBlog);
 
 // any route containing :userId, our app will first execute userById()

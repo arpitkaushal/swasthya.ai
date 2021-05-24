@@ -2,17 +2,18 @@ const mongoose = require("mongoose");
 const { ObjectId } = mongoose.Schema;
 
 const blogSchema = new mongoose.Schema({
+    blogedBy: {
+        type: ObjectId,
+        ref: "User",
+    },
     title: {
         type: String,
         required: true,
+        unique: true,
     },
     body: {
         type: String,
         required: true,
-    },
-    blogedBy: {
-        type: ObjectId,
-        ref: "User",
     },
     created: {
         type: Date,
@@ -24,6 +25,7 @@ const blogSchema = new mongoose.Schema({
             ref: "Comment",
         },
     ],
+    updated: Date,
 });
 
 module.exports = mongoose.model("Blog", blogSchema);

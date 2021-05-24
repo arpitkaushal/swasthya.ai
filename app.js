@@ -23,6 +23,7 @@ mongoose
 const blogRoutes = require("./routes/blog");
 const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/user");
+const commentRoutes = require("./routes/comment");
 
 // apiDocs - JSON response to see routes/methods available with the API
 app.get("/", (req, res) => {
@@ -56,6 +57,7 @@ app.use(expressValidator());
 app.use("/", blogRoutes);
 app.use("/", authRoutes);
 app.use("/", userRoutes);
+app.use("/", commentRoutes);
 
 app.use(function (err, req, res, next) {
     if (err.name === "UnauthorizedError") {

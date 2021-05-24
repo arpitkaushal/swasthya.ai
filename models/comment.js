@@ -3,11 +3,11 @@ const { ObjectId } = mongoose.Schema;
 
 // define various
 const commentSchema = new mongoose.Schema({
-  postedAt: {
+  commentedAt: {
     type: ObjectId,
     ref: "Blog",
   },
-  postedBy: {
+  commentedBy: {
     type: ObjectId,
     ref: "User",
   },
@@ -19,6 +19,7 @@ const commentSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  updated: Date,
 });
 
 module.exports = mongoose.model("Comment", commentSchema);

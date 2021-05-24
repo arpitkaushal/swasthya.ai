@@ -1,12 +1,17 @@
 const Blog = require("../models/blog");
 const _ = require("lodash");
 
-exports.createBlog = (req, res, next) => {
+exports.createBlog = async (req, res, next) => {
+    const blogExists = await Blog.findOne({ title: req.body.title });
+    if (blogExists)
+        return res.status(403).json({
+            error: `Title ${req.body.title}  is taken. Please choose another one!`,
+    });
     req.profile.hashed_password = undefined;
     req.profile.salt = undefined;
-    const blog = new Blog(req.body);
-    blog.blogedBy = req.profile._id;
-    blog.save((err, result) => {
+    const blog = await new Blog(req.body);
+    blog.blogedBy = req.profile;
+    await blog.save((err, result) => {
         if (err) {
             return res.status(400).json({
                 message: "Error at createBlog",
@@ -22,11 +27,12 @@ exports.createBlog = (req, res, next) => {
 
 exports.blogById = (req, res, next, id) => {
     Blog.findById(id)
-        .populate("blogedBy", "_id name")
+        .populate("blogedBy", "_id username created")
         .exec((err, blog) => {
             if (err || !blog) {
                 return res.status(400).json({
                     error: err,
+                    message: "Error in blogById.",
                 });
             }
             req.blog = blog;
@@ -34,30 +40,47 @@ exports.blogById = (req, res, next, id) => {
         });
 };
 
+exports.displayBlog = (req, res) => {
+    res.send(req.blog);
+};
+
+
+exports.getBlog = (req,res) => {
+    const blog = Blog.findbyId(req.blog._id)
+    .populate("blogedBy", "_id username created")
+    .select("_id title body created")
+    .then((blog) => {
+        res.json(blog);
+    })
+    .catch((err) => res.json({message:"Error in getBlog", error:err}) );
+}
+
 exports.getBlogs = (req, res) => {
     const blogs = Blog.find()
-        .populate("blogedBy", "_id name")
-        .select("_id title body")
+        .populate("blogedBy", "_id username created")
+        .select("_id title body created")
         .then((blogs) => {
             res.json({ blogs });
         })
-        .catch((err) => console.log(err));
+        .catch((err) => res.json({message:"Error in getBlogs", error:err}) );
 };
 
 exports.blogsByUser = (req, res) => {
     Blog.find({ blogedBy: req.profile._id })
-        .populate("blogedBy", "_id name")
+        .populate("blogedBy", "_id username created")
         .sort("_created")
         .exec((err, blogs) => {
             if (err) {
                 return res.status(400).json({
+                    message: "Error in blogedByUser",
                     error: err,
                 });
             }
-            message = `Blogs by ${req.profile.username}`;
-            res.json(
-                blogs
-            );
+            (message = `Blogs by ${req.profile.username}`),
+                res.json({
+                    message: message,
+                    blogs: blogs,
+                });
         });
 };
 
