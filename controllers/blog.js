@@ -1,7 +1,24 @@
 const Blog = require("../models/blog");
-const formidable = require("formidable");
-const fs = require("fs");
 const _ = require("lodash");
+
+exports.createBlog = (req, res, next) => {
+    req.profile.hashed_password = undefined;
+    req.profile.salt = undefined;
+    const blog = new Blog(req.body);
+    blog.blogedBy = req.profile._id;
+    blog.save((err, result) => {
+        if (err) {
+            return res.status(400).json({
+                message: "Error at createBlog",
+                error: err,
+            });
+        }
+        res.json({
+            message: `${req.profile.username} created blog successfully`,
+            result,
+        });
+    });
+};
 
 exports.blogById = (req, res, next, id) => {
     Blog.findById(id)
@@ -9,7 +26,7 @@ exports.blogById = (req, res, next, id) => {
         .exec((err, blog) => {
             if (err || !blog) {
                 return res.status(400).json({
-                    error: err
+                    error: err,
                 });
             }
             req.blog = blog;
@@ -21,40 +38,10 @@ exports.getBlogs = (req, res) => {
     const blogs = Blog.find()
         .populate("blogedBy", "_id name")
         .select("_id title body")
-        .then(blogs => {
+        .then((blogs) => {
             res.json({ blogs });
         })
-        .catch(err => console.log(err));
-};
-
-exports.createBlog = (req, res, next) => {
-    let form = new formidable.IncomingForm();
-    form.keepExtensions = true;
-    form.parse(req, (err, fields, files) => {
-        if (err) {
-            return res.status(400).json({
-                error: "Image could not be uploaded"
-            });
-        }
-        let blog = new Blog(fields);
-
-        req.profile.hashed_password = undefined;
-        req.profile.salt = undefined;
-        blog.blogedBy = req.profile;
-
-        if (files.photo) {
-            blog.photo.data = fs.readFileSync(files.photo.path);
-            blog.photo.contentType = files.photo.type;
-        }
-        blog.save((err, result) => {
-            if (err) {
-                return res.status(400).json({
-                    error: err
-                });
-            }
-            res.json(result);
-        });
-    });
+        .catch((err) => console.log(err));
 };
 
 exports.blogsByUser = (req, res) => {
@@ -64,10 +51,13 @@ exports.blogsByUser = (req, res) => {
         .exec((err, blogs) => {
             if (err) {
                 return res.status(400).json({
-                    error: err
+                    error: err,
                 });
             }
-            res.json(blogs);
+            message = `Blogs by ${req.profile.username}`;
+            res.json(
+                blogs
+            );
         });
 };
 
@@ -77,7 +67,7 @@ exports.isBloger = (req, res, next) => {
 
     if (!isBloger) {
         return res.status(403).json({
-            error: "User is not authorized"
+            error: "User is not authorized",
         });
     }
     next();
@@ -87,10 +77,10 @@ exports.updateBlog = (req, res, next) => {
     let blog = req.blog;
     blog = _.extend(blog, req.body);
     blog.updated = Date.now();
-    blog.save(err => {
+    blog.save((err) => {
         if (err) {
             return res.status(400).json({
-                error: err
+                error: err,
             });
         }
         res.json(blog);
@@ -102,11 +92,11 @@ exports.deleteBlog = (req, res) => {
     blog.remove((err, blog) => {
         if (err) {
             return res.status(400).json({
-                error: err
+                error: err,
             });
         }
         res.json({
-            message: "Blog deleted successfully"
+            message: "Blog deleted successfully",
         });
     });
 };

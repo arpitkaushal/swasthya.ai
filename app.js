@@ -1,9 +1,8 @@
+// set up the app
 const express = require("express");
 const app = express();
-const morgan = require("morgan");
-const bodyParser = require("body-parser");
-var cookieParser = require("cookie-parser");
-const expressValidator = require("express-validator");
+
+// misc dependencies
 const fs = require("fs");
 const dotenv = require("dotenv");
 dotenv.config();
@@ -38,11 +37,22 @@ app.get("/", (req, res) => {
     });
 });
 
-// middleware
+// middlewares
+
+// to get stats on API requests
+const morgan = require("morgan");
 app.use(morgan("dev"));
-app.use(bodyParser.json());
+
+// for processing JSON
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
+const cookieParser = require("cookie-parser");
 app.use(cookieParser());
+const expressValidator = require("express-validator");
 app.use(expressValidator());
+
+// routers to execute the endpoints
 app.use("/", blogRoutes);
 app.use("/", authRoutes);
 app.use("/", userRoutes);

@@ -18,10 +18,10 @@ router.get("/blogs", getBlogs);
 router.post(
     "/blog/new/:userId",
     requireSignin,
+    createBlogValidator,
     createBlog,
-    createBlogValidator
 );
-router.get("/blogs/by/:userId", requireSignin, blogsByUser);
+router.get("/blogs/by/:userId", blogsByUser);
 router.put("/blog/:blogId", requireSignin, isBloger, updateBlog);
 router.delete("/blog/:blogId", requireSignin, isBloger, deleteBlog);
 

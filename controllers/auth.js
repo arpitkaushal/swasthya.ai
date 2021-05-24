@@ -49,6 +49,7 @@ exports.signin = (req, res) => {
 
 exports.signout = (req, res) => {
     res.clearCookie("t");
+    // m1 = `Signed Out successfully from ${req.profile.username}!`;
     return res.json({ message: "Signed Out successfully!" });
 };
 

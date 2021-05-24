@@ -31,7 +31,7 @@ exports.allUsers = (req, res) => {
             });
         }
         res.json({ users });
-    }).select("name email updated created");
+    }).select("username");
 };
 
 exports.getUser = (req, res) => {
