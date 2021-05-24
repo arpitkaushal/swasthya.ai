@@ -4,7 +4,8 @@
   "description": "A Node Js API",
   "main": "app.js",
   "scripts": {
-    "dev": "nodemon app.js"
+    "dev": "nodemon app.js",
+    "depri":"node --trace-deprecation app.js"
   },
   "keywords": [
     "node",

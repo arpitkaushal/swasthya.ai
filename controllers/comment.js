@@ -1,58 +1,69 @@
 const Comment = require("../models/comment");
 const User = require("../models/user");
+const Blog = require("../models/blog");
 const _ = require("lodash");
 
-exports.createComment = (req, res, next) => {
+exports.createComment = async (req, res, next) => {
+    const commentExists = await Comment.findOne({ body: req.body.body });
+    if (commentExists)
+        return res.status(403).json({
+            error: `Comment ${req.body.body} is taken. Please choose another one!`,
+        });
     req.profile.hashed_password = undefined;
     req.profile.salt = undefined;
     const comment = new Comment(req.body);
     comment.commentedBy = req.profile._id;
     comment.commentedAt = req.blog._id;
-    comment
-        .save((err, result) => {
-            if (err) {
-                return res.status(400).json({
-                    message: "Error at createComment",
-                    error: err,
-                });
-            }
-            res.json({
-                message: `${req.profile.username} commented successfully on ${req.blog.title}. The comment ${req.body.body}`,
-                result,
+
+    var messages = ["sadds", `${req.body.body}`];
+
+    await comment.save((err, result) => {
+        if (err) {
+            return res.status(400).json({
+                message: "Error at createComment",
+                error: err,
             });
-        })
-        .then(() => {
-            Post.findByIdAndUpdate(
-                req.blog._id,
-                { $push: { comments: comment } },
-                { new: true }
-            ).exec((err, result) => {
-                if (err) {
-                    return res.status(400).json({
-                        text: "Error at createComment: Post.findByIdAndUpdate",
-                        error: err,
-                    });
-                } else {
-                    res.json(result);
-                }
-            });
-        })
-        .then(() => {
-            User.findByIdAndUpdate(
-                req.profile._id,
-                { $push: { comments: comment } },
-                { new: true }
-            ).exec((err, result) => {
-                if (err) {
-                    return res.status(400).json({
-                        text: "Error at createComment > User.findByIdAndUpdate",
-                        error: err,
-                    });
-                } else {
-                    res.json(result);
-                }
-            });
+        }
+        messages.push(
+            `${req.profile.username} commented successfully on ${req.blog.title}. The comment is ${req.body.body}.`
+        );
+        res.json({
+            // message: `${req.profile.username} commented successfully on ${req.blog.title}. The comment is ${req.body.body}.`,
+            result,
         });
+    });
+    await Blog.findByIdAndUpdate(
+        req.blog._id,
+        { $push: { comments: comment } },
+        { new: true }
+    ).exec((err, result) => {
+        if (err) {
+            return res.status(400).json({
+                text: "Error at createComment: Blog.findByIdAndUpdate",
+                error: err,
+            });
+        }
+        messages.push(`Updated comments list at the blog ${req.blog.title}.`);
+        // res.json({
+        // message: "Updated comments list at the post",
+        // result: result,
+        // });
+    });
+    await User.findByIdAndUpdate(
+        req.profile._id,
+        { $push: { comments: comment } },
+        { new: true }
+    ).exec((err, result) => {
+        if (err) {
+            return res.status(400).json({
+                text: "Error at createComment > User.findByIdAndUpdate",
+                error: err,
+            });
+        } 
+        messages.push(`Updated comments list at the user ${req.profile.username}.`);
+        // res.json(result);
+    });
+    await console.log(messages);
 };
 
 exports.commentById = (req, res, next, id) => {
