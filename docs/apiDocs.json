@@ -1,12 +1,62 @@
 {
-        "/": "api docs",
-        "/signup": "signup",
-        "/signin": "signin",
-        "/signout": "signout",
-        "/users": "get all users",
-        "/user/:userId": "get/update/delete user",
-        "/blogs": "get all blogs",
-        "/blog/new/:userId": "create new blog",
-        "/blogs/by/:userId": "get blogs by user",
-        "/blog/:blogId": "update/delete blog"
+    "/": {
+        "description": "List of API Endpoints",
+        "method": "GET",
+        "params": {}
+    },
+    "/signup": {
+        "description": "New User Signup",
+        "method": "POST",
+        "params": {
+            "username": "must be between 2 to 32 chars",
+            "password": ">6 chars, must contain a number"
+        }
+    },
+    "/signin": {
+        "description": "Existing User Signin",
+        "method": "POST",
+        "params": {
+            "username": "must be between 2 to 32 chars",
+            "password": ">6 chars, must contain a number"
+        }
+    },
+    "/signout": {
+        "description": "Signout from current account. Clear cookies.",
+        "method": "GET",
+        "params": {}
+    },
+    "/users": {
+        "description": "List all users",
+        "method": "GET",
+        "params": {}
+    },
+    "/users/:userId": {
+        "description": "view/update/delete user",
+        "method": "GET/PUT/DELETE",
+        "params": {}
+    },
+    "/blogs": {
+        "description": "List all blogs",
+        "method": "GET",
+        "params": {}
+    },
+    "/blog/new/:userId": {
+        "description": "Create new blogs by said user.",
+        "method": "POST",
+        "params": {
+            "title": "must be between 2 and 150 chars",
+            "body": "must be between 2 and 2000 chars"
+        }
+    },
+    "/blogs/by/:userId": {
+        "description": "Fetch blogs by said user.",
+        "method": "GET",
+        "params"{}
+    },
+    "/blogs/:blogId": {
+        "description": "Fetch blogs by said user.",
+        "method": "GET",
+        "params"{}
+    },
+    "/blog/:blogId": "update/delete blog"
 }

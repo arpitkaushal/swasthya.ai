@@ -7,6 +7,7 @@ const {
     isBloger,
     updateBlog,
     deleteBlog,
+    getBlog,
     displayBlog
 } = require("../controllers/blog");
 const { requireSignin } = require("../controllers/auth");
@@ -23,8 +24,9 @@ router.post(
     createBlog,
 );
 router.get("/blogs/by/:userId", blogsByUser);
-router.put("/blog/:blogId", isBloger, updateBlog);
+// router.get("/blog/:blogId", getBlog);
 router.get("/blog/:blogId", displayBlog);
+router.put("/blog/:blogId", isBloger, updateBlog);
 router.put("/blog/:blogId", updateBlog);
 router.delete("/blog/:blogId", requireSignin, isBloger, deleteBlog);
 

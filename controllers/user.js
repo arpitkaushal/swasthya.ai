@@ -13,6 +13,11 @@ exports.userById = (req, res, next, id) => {
     });
 };
 
+exports.displayUser = (req, res) => {
+    res.send(req.user);
+};
+
+
 exports.hasAuthorization = (req, res, next) => {
     const authorized =
         req.profile && req.auth && req.profile._id === req.auth._id;
@@ -31,7 +36,7 @@ exports.allUsers = (req, res) => {
             });
         }
         res.json({ users });
-    }).select("username");
+    }).select("username comments");
 };
 
 exports.getUser = (req, res) => {

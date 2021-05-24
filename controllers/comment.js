@@ -15,8 +15,10 @@ exports.createComment = async (req, res, next) => {
     comment.commentedBy = req.profile._id;
     comment.commentedAt = req.blog._id;
 
-    var messages = ["sadds", `${req.body.body}`];
-
+    var messages = [];
+    messages.push(`${req.body.body}`);
+    console.log("query start");
+    
     await comment.save((err, result) => {
         if (err) {
             return res.status(400).json({
@@ -27,11 +29,9 @@ exports.createComment = async (req, res, next) => {
         messages.push(
             `${req.profile.username} commented successfully on ${req.blog.title}. The comment is ${req.body.body}.`
         );
-        res.json({
-            // message: `${req.profile.username} commented successfully on ${req.blog.title}. The comment is ${req.body.body}.`,
-            result,
-        });
+        res.json({result,});
     });
+    
     await Blog.findByIdAndUpdate(
         req.blog._id,
         { $push: { comments: comment } },
@@ -44,11 +44,8 @@ exports.createComment = async (req, res, next) => {
             });
         }
         messages.push(`Updated comments list at the blog ${req.blog.title}.`);
-        // res.json({
-        // message: "Updated comments list at the post",
-        // result: result,
-        // });
     });
+
     await User.findByIdAndUpdate(
         req.profile._id,
         { $push: { comments: comment } },
@@ -63,7 +60,9 @@ exports.createComment = async (req, res, next) => {
         messages.push(`Updated comments list at the user ${req.profile.username}.`);
         // res.json(result);
     });
-    await console.log(messages);
+    // await console.log(messages);
+    // console.log(x);
+    // res.send.json(x);
 };
 
 exports.commentById = (req, res, next, id) => {

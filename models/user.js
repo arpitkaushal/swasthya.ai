@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { ObjectId } = mongoose.Schema;
 const uuidv1 = require("uuid/v1");
 const crypto = require("crypto");
 
@@ -27,7 +28,13 @@ const userSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
-    updated: Date
+    updated: Date,
+    comments: [
+        {
+            type: ObjectId,
+            ref: "Comment",
+        },
+    ],
 });
 
 /**

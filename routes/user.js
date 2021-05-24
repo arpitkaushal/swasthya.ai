@@ -4,7 +4,8 @@ const {
     allUsers,
     getUser,
     updateUser,
-    deleteUser
+    deleteUser,
+    displayUser,
 } = require("../controllers/user");
 const { requireSignin } = require("../controllers/auth");
 
@@ -12,6 +13,9 @@ const router = express.Router();
 
 router.get("/users", allUsers);
 router.get("/user/:userId", getUser);
+router.get("/users/:userId/level/", getUser);
+
+// router.get("/user/:userId", displayUser);
 router.put("/user/:userId", requireSignin, updateUser);
 router.delete("/user/:userId", requireSignin, deleteUser);
 

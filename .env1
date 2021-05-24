@@ -1,0 +1,4 @@
+PORT = 8081
+MONGO_URI = "mongodb+srv://<db_user>:<password>@cluster0.otja8.mongodb.net/database?retryWrites=true&w=majority"
+APP_NAME= nodeapi
+JWT_SECRET = SOMEUNIQUESECRETSTRING

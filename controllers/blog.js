@@ -6,7 +6,7 @@ exports.createBlog = async (req, res, next) => {
     if (blogExists)
         return res.status(403).json({
             error: `Title ${req.body.title}  is taken. Please choose another one!`,
-    });
+        });
     req.profile.hashed_password = undefined;
     req.profile.salt = undefined;
     const blog = await new Blog(req.body);
@@ -44,25 +44,26 @@ exports.displayBlog = (req, res) => {
     res.send(req.blog);
 };
 
-
-exports.getBlog = (req,res) => {
+exports.getBlog = (req, res) => {
     const blog = Blog.findbyId(req.blog._id)
-    .populate("blogedBy", "_id username created")
-    .select("_id title body created")
-    .then((blog) => {
-        res.json(blog);
-    })
-    .catch((err) => res.json({message:"Error in getBlog", error:err}) );
-}
-
-exports.getBlogs = (req, res) => {
-    const blogs = Blog.find()
-        .populate("blogedBy", "_id username created")
         .select("_id title body created")
+        .populate("comments", "_id body commentedBy")
+        .populate("blogedBy", "_id username created")
         .then((blogs) => {
             res.json({ blogs });
         })
-        .catch((err) => res.json({message:"Error in getBlogs", error:err}) );
+        .catch((err) => res.json({ message: "Error in getBlogs", error: err }));
+};
+
+exports.getBlogs = (req, res) => {
+    const blogs = Blog.find()
+        .select("_id title body created")
+        .populate("comments", "_id body commentedBy")
+        .populate("blogedBy", "_id username created")
+        .then((blogs) => {
+            res.json({ blogs });
+        })
+        .catch((err) => res.json({ message: "Error in getBlogs", error: err }));
 };
 
 exports.blogsByUser = (req, res) => {
