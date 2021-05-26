@@ -77,3 +77,6 @@ how will a user be referred, using his username? or mongo-wali-ID ?
 
 
 why comments as separate objects in 
+
+intially proposed solution 
+fusing blogId as an edge betwen users who comment on the same blog. so, that creates a complete sub graph for that set of users. i.e. jC2 edges on the ith blog with j users who commented on it.  

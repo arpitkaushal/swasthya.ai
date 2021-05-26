@@ -18,10 +18,10 @@ exports.setLevelNum = (req,res,next,levelNum) => {
     next();
 }
 
-exportd.getLevelFriends = (req,res) => {
+exports.getLevelFriends = (req,res) => {
     /// write bfs here
     const k = req.level;
-    
+
 
 }
 

@@ -1,4 +1,6 @@
 PORT = 8081
-MONGO_URI = "mongodb+srv://<db_user>:<password>@cluster0.otja8.mongodb.net/database?retryWrites=true&w=majority"
+# choose from either of the two MONGO_URI i.e. a local instance of Mongo or one from Mongo Atlas
+# MONGO_URI = "mongodb+srv://<db_user>:<password>@cluster0.otja8.mongodb.net/database?retryWrites=true&w=majority"
+MONGO_URI = "mongodb://localhost:27017/swasthya_ai?retryWrites=true&w=majority"
 APP_NAME= nodeapi
 JWT_SECRET = SOMEUNIQUESECRETSTRING
