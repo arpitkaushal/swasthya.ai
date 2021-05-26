@@ -51,12 +51,12 @@
     "/blogs/by/:userId": {
         "description": "Fetch blogs by said user.",
         "method": "GET",
-        "params"{}
+        "params": {}
     },
     "/blogs/:blogId": {
         "description": "Fetch blogs by said user.",
         "method": "GET",
-        "params"{}
+        "params": {}
     },
     "/blog/:blogId": "update/delete blog"
 }

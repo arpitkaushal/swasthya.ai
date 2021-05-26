@@ -54,6 +54,8 @@ const expressValidator = require("express-validator");
 app.use(expressValidator());
 
 // routers to execute the endpoints
+const cors = require("cors");
+app.use(cors());
 app.use("/", blogRoutes);
 app.use("/", authRoutes);
 app.use("/", userRoutes);

@@ -74,3 +74,6 @@ level-K friends ke bech mein 2*K edges hongi (comments being an edge)
 
 users bhi create karne honge yaar
 how will a user be referred, using his username? or mongo-wali-ID ? 
+
+
+why comments as separate objects in 

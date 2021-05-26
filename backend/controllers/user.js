@@ -13,6 +13,18 @@ exports.userById = (req, res, next, id) => {
     });
 };
 
+exports.setLevelNum = (req,res,next,levelNum) => {
+    req.level = levelNum;
+    next();
+}
+
+exportd.getLevelFriends = (req,res) => {
+    /// write bfs here
+    const k = req.level;
+    
+
+}
+
 exports.displayUser = (req, res) => {
     res.send(req.user);
 };
@@ -36,7 +48,7 @@ exports.allUsers = (req, res) => {
             });
         }
         res.json({ users });
-    }).select("username comments");
+    }).select("username comments created");
 };
 
 exports.getUser = (req, res) => {
