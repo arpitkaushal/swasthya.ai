@@ -15,7 +15,7 @@ const router = express.Router();
 
 router.get("/users", allUsers);
 router.get("/user/:userId", getUser);
-router.get("/users/:userId/level/:levelNum", getUser, getLevelFriends);
+router.get("/users/:userId/level/:levelNum", getLevelFriends);
 
 // router.get("/user/:userId", displayUser);
 router.put("/user/:userId", requireSignin, updateUser);

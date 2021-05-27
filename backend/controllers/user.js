@@ -21,14 +21,15 @@ exports.setLevelNum = (req,res,next,levelNum) => {
 exports.getLevelFriends = (req,res) => {
     /// write bfs here
     const k = req.level;
-
+    console.log("Hey, you're inside the function that we'll complete soon and taste glory!");
+    console.log(`You're checking level ${k} friends for the user ${req.profile.username} who has ID ${req.profile._id}.`)
+    res.status(200).json({message: "You're awesome!"})
 
 }
 
 exports.displayUser = (req, res) => {
     res.send(req.user);
 };
-
 
 exports.hasAuthorization = (req, res, next) => {
     const authorized =
@@ -51,10 +52,11 @@ exports.allUsers = (req, res) => {
     }).select("username comments created");
 };
 
-exports.getUser = (req, res) => {
+exports.getUser = (req, res, next) => {
     req.profile.hashed_password = undefined;
     req.profile.salt = undefined;
     return res.json(req.profile);
+    next();
 };
 
 exports.updateUser = (req, res, next) => {
