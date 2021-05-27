@@ -99,8 +99,9 @@ exports.getComment = (req, res) => {
 
 exports.getComments = (req, res) => {
     const comments = Comment.find()
-        .populate("commentedBy", "_id username created")
-        .select("_id title body")
+        .populate("commentedBy", "_id username")
+        .populate("commentedAt","_id title")
+        .select("_id body")
         .then((comments) => {
             res.json({ comments });
         })

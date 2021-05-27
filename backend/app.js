@@ -53,9 +53,11 @@ app.use(cookieParser());
 const expressValidator = require("express-validator");
 app.use(expressValidator());
 
-// routers to execute the endpoints
+// Cross-Origin Resource Sharing aka cors to enable requests from frontend client
 const cors = require("cors");
 app.use(cors());
+
+// routers to execute the endpoints
 app.use("/", blogRoutes);
 app.use("/", authRoutes);
 app.use("/", userRoutes);

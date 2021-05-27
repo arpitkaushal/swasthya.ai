@@ -13,6 +13,8 @@ exports.signup = async (req, res) => {
     await user.save();
     res.status(200).json({
         message: `Signup success! Your username is ${req.body.username} . Please login using your credentials.`,
+        userId: user._id,
+        username: user.username
     });
 };
 

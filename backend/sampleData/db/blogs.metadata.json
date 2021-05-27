@@ -1,0 +1,1 @@
+{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_"},{"v":{"$numberInt":"2"},"unique":true,"key":{"title":{"$numberInt":"1"}},"name":"title_1","background":true}],"uuid":"1edbf8fd4d8245ada7a8d15ada358a70","collectionName":"blogs"}
