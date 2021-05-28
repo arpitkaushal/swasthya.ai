@@ -10,16 +10,19 @@ this will start a BFS with source as {{userId}} say `u0` and get nodes a distanc
     queue.push(u0);
     var path = 0;
     while(!queue.empty()){
-        Node x = queue.pop();
-        GET x's [comments]
-        for(commentId in comments){
-            GET comments/:commentId
+        int n = queue.size();
+        for(int j=0; j<n; j++){
+            Node x = queue.pop();
+            GET x's [comments]
+            for(commentId in comments){
+                GET comments/:commentId
+                // counting path as the ones that we've completely covered, i.e. excluding the one that we're currently at
+                // if we at odd path, then inner end point was of a blog, so comments connect them outwards to user node who commented on that blog  
+                if(path%2) queue.push(commentId.commentedBy) iff commentedBy wasn't processed before
 
-            // if we at odd path, then inner end point was of a blog, so comments connect them outwards to user node who commented on that blog  
-            if(path%2) queue.push(commentId.commentedBy) iff commentedBy wasn't processed before
-
-            // if we at even path, then inner end point was of users, so comments connect them outwards to the blog they commented at
-            else queue.push(commentId.commentedAt) iff commentedAt wasn't processed before
+                // if we at even path, then inner end point was of users, so comments connect them outwards to the blog they commented at
+                else queue.push(commentId.commentedAt) iff commentedAt wasn't processed before
+            }
         }
         path++;
         if(path==2*k-1) break;  

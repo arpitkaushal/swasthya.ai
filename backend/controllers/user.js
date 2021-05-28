@@ -51,7 +51,7 @@ exports.setLevelNum = (req, res, next, levelNum) => {
 
 exports.getLevelFriends = async (req, res) => {
     const k = req.level;
-    const q = await new Queue();
+    const q = new Queue();
     var user = req.profile._id;
     q.push(user);
     var visited = []; visited.push(JSON.stringify(user));
@@ -105,11 +105,10 @@ exports.getLevelFriends = async (req, res) => {
         const x = await User.findById(q.pop(),'username _id').exec();
         ans.add(JSON.stringify(x));
     }
-    
     const d_ans = [];
     for( id of ans) d_ans.push(JSON.parse(id));
     var message = `Successfully found Level ${k} friends of ${req.profile.username}.`;
-    if(!(d_ans.length)) message =  `${req.profile.username} doesn't have any Level ${k} friends. Maximum Level for them is ${Math.floor(currLevel/2)} .`;
+    if(!(d_ans.length)) message = `${req.profile.username} doesn't have any Level ${k} friends. Maximum Level for them is ${Math.floor(currLevel/2)} .`;
     res.status(200).json({ message:message, users: d_ans });
 };
 

@@ -1,10 +1,1 @@
-// db.blogs.insertOne({
-//     "_id":"b3",
-//     "title":"t4",
-//     "body":"anything",
-//     // "blogedBy";""
-// })
-// console.log(db);
-// db
-// db.blogs.findOneAndDelete({"_id":"b3"})
-db.blogs.find()
+db.blogs.find({},{_id :1, title:1})
