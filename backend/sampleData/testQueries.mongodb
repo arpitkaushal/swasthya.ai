@@ -1,1 +1,7 @@
-db.blogs.find({},{_id :1, title:1})
+// db.users.findOneAndDelete({username: "u70"})
+use("swasthya_ai_1");
+db.dropDatabase()
+// use("swasthya_ai_2");
+// db.dropDatabase()
+// use("swasthya_ai_largeTemp");
+// db.dropDatabase()
