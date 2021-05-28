@@ -17,7 +17,6 @@ exports.createComment = async (req, res, next) => {
 
     var messages = [];
     messages.push(`${req.body.body}`);
-    console.log("query start");
     
     await comment.save((err, result) => {
         if (err) {

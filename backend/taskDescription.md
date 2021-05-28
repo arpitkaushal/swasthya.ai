@@ -10,6 +10,18 @@
 8. Use high standard design principles while implementing the solution.
 9. Write modular and clean code with comments keeping in mind scalability and manageability of code.
 10. Write a script to add say `p` blogs, `q` users, and `r` comments.
+11. 
+
+
+# Task for Load Testing
+
+1. Write script to setup database with following config
+   a.	Blogs in range of Thousands – 10 k
+   b.	Users – 100k, 1M, 10M
+   c.	Comments – x is the number of random comments per user
+2.	Find the time for the kth level friend, k = 3 , 4 , 5
+
+
 
 
 # Judging Criteria
@@ -27,6 +39,7 @@
 # Discussion
 
 1. Think of how would things work on scale and time required to execute a query for level n friend.
+
 
 # Doubts and clarifications
 

@@ -67,14 +67,14 @@ exports.getLevelFriends = async (req, res) => {
                 x = await Blog.findById(q.pop(), "comments title").exec();
                 if (!(visited.includes(JSON.stringify(x._id)))) {
                     visited.push(JSON.stringify(x._id));
-                    console.log(`Visited ${x.title}`);
+                    // console.log(`Visited ${x.title}`);
                 } 
             } 
             else {                          // currently at a User Node
                 x = await User.findById(q.pop(), "comments username").exec();
                 if (!(visited.includes(JSON.stringify(x._id)))) {
                     visited.push(JSON.stringify(x._id));
-                    console.log(`Visited ${x.username}`);
+                    // console.log(`Visited ${x.username}`);
                 }
             }
             // get X's comments
@@ -96,7 +96,7 @@ exports.getLevelFriends = async (req, res) => {
             }
 
         }
-        currLevel++;
+        if(q.length>0) currLevel++;
         if (currLevel >= 2 * k ) break;
     }
 
