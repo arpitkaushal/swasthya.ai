@@ -68,7 +68,7 @@ exports.getLevelFriends = async (req, res) => {
     // console.log(`The length of the queue is ${q.length}.`);
     var visited = [];
     visited.push(JSON.stringify(user));
-    console.log(JSON.stringify(user));
+    // console.log(JSON.stringify(user));
     console.log(visited);
     var currLevel = 0;
     // var path = 0;
@@ -152,11 +152,34 @@ exports.getLevelFriends = async (req, res) => {
         // var x = q.pop();
     }
 
-    var ans = [];
+    // var ans = [];
+    var ans = new Set;
     while(q.length){
-        ans.push(q.pop());
+        const x = await User.findById(q.pop(),'username _id').exec();
+        // ans.push(x);
+        ans.add(JSON.stringify(x));
     }
-    var d_ans = [ ...new Set(ans) ];
+
+    // const d_ans = ([...set].map(item)) => {
+    //     if (typeof item === 'string') return JSON.parse(item);
+    //     else if (typeof item === 'object') return item;
+    // };
+    
+    const d_ans = [];
+    for( id of ans){
+        if (typeof id === 'string') d_ans.push(JSON.parse(id));
+        else if (typeof id === 'object') d_ans.push(id);
+    }
+
+    // var d_ans = new Map();
+    // ans.forEach(object => {
+    //     for (const key in object) {
+    //         d_ans.set(key, object[key])
+    //     }
+    // })
+
+    // console.log(ans);
+    // var d_ans = [ ...new Set(ans) ];
     res.status(200).json({ users: d_ans });
 };
 
