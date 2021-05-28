@@ -9,6 +9,7 @@
 7. Create a REST api GET /users/<userId>/level/<levelNo> which should give list of all friends of that level for given userId (ex- /users/1234/level/1 for first level friend). 
 8. Use high standard design principles while implementing the solution.
 9. Write modular and clean code with comments keeping in mind scalability and manageability of code.
+10. Write a script to add say `p` blogs, `q` users, and `r` comments.
 
 
 # Judging Criteria
@@ -22,6 +23,10 @@
 
 1. Github link with steps to run and execute the code.
 2. A readme on the github explaining the approach taken.
+
+# Discussion
+
+1. Think of how would things work on scale and time required to execute a query for level n friend.
 
 # Doubts and clarifications
 
